@@ -1,0 +1,32 @@
+@(teacher: db.Teacher)
+@@
+@base {
+    <h1>
+        Egzaminy
+    </h1>
+    <a href="/newExam">Nowy</a>
+
+    <h2>Rozpoczęte</h2>
+    <ol>
+    @for(e <- Exam.pendingFor(teacher)) {
+        @exam.row(e)
+    }
+    </ol>
+
+
+    <h2>Oczekujące</h2>
+    <ol>
+    @for(e <- Exam.notStarterFor(teacher)) {
+        @exam.row(e)
+    }
+    </ol>
+
+    <h2>Zakonczone</h2>
+    <ol>
+    @for(e <- Exam.endedFor(teacher)) {
+        @exam.row(e)
+    }
+    </ol>
+
+
+}

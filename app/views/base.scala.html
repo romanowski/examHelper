@@ -1,0 +1,13 @@
+@(content: Html, desc: String = "Pulpit roboczy")
+
+@main(desc) {
+    <h1>
+        Actions
+    </h1>
+    <div>
+        <a href="/logout">Wyloguj</a>
+        <a href="/">Egazminy</a>
+    </div>
+
+    <div>@content</div>
+}

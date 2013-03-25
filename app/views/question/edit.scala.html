@@ -1,0 +1,4 @@
+@(formName: String, formId: Any)(form: Form[db.Question])(implicit req: Utils.Req)
+@forms.base(formName, formId) {
+    @helper.inputText(form("question"))
+}

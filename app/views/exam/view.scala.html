@@ -1,0 +1,5 @@
+@(exam: db.Exam)(implicit req: Request[AnyContent])
+@exam.title
+</br>
+@exam.desc
+<a href=" @Utils.editPath(ExamsController.formName, exam.id_!) " class="hash-href">Edytuj</a>

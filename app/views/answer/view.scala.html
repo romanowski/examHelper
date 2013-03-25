@@ -1,0 +1,10 @@
+@(answer: db.Answer)(implicit req: Request[AnyContent])
+<span class="@{
+    if(answer.correct)
+        "answer-correct"
+    else
+        "answer-incorrect"
+}">
+@answer.text
+</span>
+<a href="@Utils.editPath(AnswerController.formName, answer.id_!)" class="hash-href">Edytuj</a>

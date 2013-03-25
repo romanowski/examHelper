@@ -1,0 +1,21 @@
+@(form: Form[(String, Option[Long])])(implicit flash: Flash)
+@@main("Logowanie") {
+
+    @helper.form(routes.Application.login) {
+
+        <h1>Sign in</h1>
+
+        @form.globalError.map { error =>
+            <p class="error">
+            @error.message
+            </p>
+        }
+
+        @helper.inputText(form("email"))
+        @helper.inputPassword(form("password"))
+        <p>
+            <button type="submit" id="loginbutton">Login</button>
+        </p>
+
+    }
+    }

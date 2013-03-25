@@ -1,0 +1,7 @@
+@(exam: db.Exam)
+
+<li>
+    <a href=" @exam.id.map(id => routes.ExamsController.examView(id.toString).url).getOrElse(routes.ExamsController.newExam.url) ">
+        @exam.title dnia: @Utils.printDate(exam.date)
+    </a>
+</li>

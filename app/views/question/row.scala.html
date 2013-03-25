@@ -1,0 +1,10 @@
+@(q: db.Question)(implicit req: Utils.Req)
+<li>
+    <div>@QuestionsController.view(q)</div>
+    Odpowiedzi: <a href="@routes.AnswerController.newAnswer(q.examId.toString, q.id_!.toString)">Dodaj</a>
+    <ol>
+    @for(ans <- db.Answer.forQuestion(q.id_!)) {
+        @answer.row(ans)
+    }
+    </ol>
+</li>

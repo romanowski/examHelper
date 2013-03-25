@@ -1,0 +1,11 @@
+.info {
+    display: none;
+}
+
+.answer-incorrect{
+    background-color: #f08080;
+}
+
+.answer-correct{
+    background-color: #90ee90;
+}

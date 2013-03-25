@@ -1,0 +1,2 @@
+@(q: db.Question)(implicit req: Utils.Req)
+<div>@q.question <a href="@Utils.editPath(QuestionsController.formName, q.id_!)" class="hash-href">Edytuj</a></div>

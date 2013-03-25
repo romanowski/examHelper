@@ -1,0 +1,8 @@
+@(formName: String, formId: Any)(content: Html)(implicit req: Request[AnyContent])
+<form method="POST" action="@Utils.removeEditPath(formName)" class="hash-action">
+    @content
+    <input type="hidden" name="@formName" value="@formId"/>
+    <p>
+        <button type="submit" id="new-exam">Zapisz</button>
+    </p>
+</form>

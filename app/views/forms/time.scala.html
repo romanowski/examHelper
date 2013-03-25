@@ -1,0 +1,15 @@
+@(name: String, id: String, value: Option[String], params: Map[Symbol, Any])
+<div id="startTime-@id" class="input-append date">
+    <input type="text" data-format="hh:mm" name="@name" id="@id" value='@value.getOrElse("")'>
+    <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+        </i>
+    </span>
+    <script type="text/javascript">
+        $(function() {
+        $('#startTime-@id').datetimepicker({
+        pickDate: false
+        });
+        });
+    </script>
+</div>

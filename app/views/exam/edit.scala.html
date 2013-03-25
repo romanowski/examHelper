@@ -1,0 +1,9 @@
+@(formName: String, id: Any)(form: Form[db.Exam])(implicit req: Request[AnyContent])
+
+@forms.base(formName, id) {
+    @helper.inputText(form("title"))
+    @helper.textarea(form("desc"))
+    @helper.input(form("startDate"))(forms.date.apply _)
+    @helper.input(form("startTime"))(forms.time.apply _)
+    @helper.inputText(form("duration"))
+}
