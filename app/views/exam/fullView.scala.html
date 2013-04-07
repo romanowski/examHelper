@@ -1,26 +1,36 @@
 @(exam: db.Exam)(implicit req: Request[AnyContent])
 @
 @base {
-    <div id="tab-carousel" class="tabbable">
-        <ul class="nav nav-tabs" id="exam-tabs">
-            <li class="active"><a href="#edit" data-toggle="tab" id="edit-button">Edycja</a></li>
-            <li><a href="#questions" data-toggle="tab" id="questions-button">Pytania</a></li>
-            <li><a href="#students" data-toggle="tab" id="students-button">Uczestnicy</a></li>
-        </ul>
-        <div class="tab-content">
-            <div id="edit" class="tab-pane active">
-            @ExamsController.view(exam)
+    <div id="exam">
+        <div id="tab-carousel" class="tabbable">
+            <ul class="nav nav-tabs" id="exam-tabs">
+                <li class="active"><a href="#edit" data-toggle="tab" id="edit-button">Edycja</a></li>
+                <li><a href="#questions" data-toggle="tab" id="questions-button">Pytania</a></li>
+                <li><a href="#students" data-toggle="tab" id="students-button">Uczestnicy</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="edit" class="tab-pane active">
+                @ExamsController.view(exam)
+                </div>
+                <div id="questions" class="tab-pane">
+                    <h2>Pytania</h2>
+                    <a href=" @routes.QuestionsController.newQuestion(exam.id_!.toString)">Nowe</a>
+                    <ol class="exam-list" parentId="@exam.id.getOrElse("-1")">
+                    @for(q <- Question.forExam(exam.id_!)) {
+                        @question.row(q)
+                    }
+                    </ol>
+                </div>
+                <div id="students" class="tab-pane">
+                    <h2>Uczestnicy</h2>
+                    <a href="@routes.StudentExamController.newStudent(exam.id_!.toString)">Nowy</a>
+                    <ol>
+                    @for(q <- StudentExam.forExam(exam.id_!)) {
+                        @studentExam.row(q)
+                    }
+                    </ol>
+                </div>
             </div>
-            <div id="questions" class="tab-pane">
-                <h2>Pytania</h2>
-                <a href=" @routes.QuestionsController.newQuestion(exam.id_!.toString) ">Nowe</a>
-                <ol>
-                @for(q <- Question.forExam(exam.id_!)) {
-                    @question.row(q)
-                }
-                </ol>
-            </div>
-            <div id="students" class="tab-pane">Ma aaaa</div>
         </div>
     </div>
 }

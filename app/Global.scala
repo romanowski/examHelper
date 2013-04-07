@@ -22,7 +22,7 @@ object Global extends GlobalSettings {
     lazy val database = Database.forDataSource(DB.getDataSource())
 
     database.withSession {
-      val tables = List(Answer, Question, Exam, Teacher)
+      val tables = List(StudentExam, Answer, Question, Exam, Teacher)
 
       val data = tables.flatMap(t => TRY(t -> t.backup))
 

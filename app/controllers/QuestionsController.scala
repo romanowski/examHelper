@@ -2,8 +2,9 @@ package controllers
 
 import play.api.data._
 import play.api.data.Forms._
-import db.Question
+import db.{OrderedSchoolEntityTable, Answer, Question}
 import play.api.templates.Html
+import scala.Some
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,7 @@ import play.api.templates.Html
  * Time: 22:20
  * To change this template use File | Settings | File Templates.
  */
-object QuestionsController extends EntityController[Question] {
+object QuestionsController extends EntityController[Question] with OrderedEntityController[Answer] {
 
 
   override val formName: String = "qest_form"
@@ -33,4 +34,9 @@ object QuestionsController extends EntityController[Question] {
   override def editHtml(id: Any)(v: Form[Question])(implicit req: Utils.Req): Html = views.html.question.edit(formName, id)(v)
 
   def newQuestion(examId: String) = newAction(Question.empty(examId.toLong), routes.ExamsController.examView(examId) + "#questions")
+
+
+  def items(id: Long): Seq[Answer] = Answer.forQuestion(id)
+
+  val meta: OrderedSchoolEntityTable[Answer] = Answer
 }

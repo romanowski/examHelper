@@ -1,0 +1,6 @@
+@(formName: String, formId: Any)(form: Form[db.StudentExam])(implicit req: Utils.Req)
+@forms.base(formName, formId) {
+    @helper.inputText(form("name"))
+    @helper.inputText(form("login"))
+    @helper.inputText(form("password"))
+}

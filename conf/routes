@@ -8,16 +8,22 @@ GET     /login                                  controllers.Application.login
 GET     /logout                                 controllers.Application.logout
 #exams
 GET     /newExam                                controllers.ExamsController.newExam
-POST     /newExam                                controllers.ExamsController.newExam
+POST     /newExam                               controllers.ExamsController.newExam
 GET     /exam/:id                               controllers.ExamsController.examView(id)
 POST    /exam/:id                               controllers.ExamsController.examView(id)
+POST    /exam/arrange/:id                       controllers.ExamsController.orderChange(id)
 #question
 POST    /exam/:id/add-question/                 controllers.QuestionsController.newQuestion(id)
 GET    /exam/:id/add-question/                  controllers.QuestionsController.newQuestion(id)
+POST   /question/arrange/:id                    controllers.QuestionsController.orderChange(id)
+
 #answer
 POST    /exam/:id/question/:qid/add-answer      controllers.AnswerController.newAnswer(id, qid)
 GET    /exam/:id/question/:qid/add-answer      controllers.AnswerController.newAnswer(id, qid)
 
+#studenrExam
+POST /exam/:id/stundet/add-stundet      controllers.StudentExamController.newStudent(id)
+GET  /exam/:id/stundet/add-stundet      controllers.StudentExamController.newStudent(id)
 
 
 

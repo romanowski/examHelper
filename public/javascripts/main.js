@@ -1,22 +1,3 @@
-/*
- function fixTabs() {
- var baseId = window.location.hash;
- $(".tabButton").removeClass("active")
- $(baseId + "-button").addClass('active')
- console.info(baseId + "-button")
- }
-
- $(function () {
- $(".tabButton").each(function (id) {
- var b = $(this)
- if (b.attr('href'))
- b.attr("id", b.attr('href').substring(1) + "-button")
- })
- fixTabs();
- });
- $(window).on('hashchange', fixTabs);*/
-
-
 function fixHashParams(paramName, paramValue) {
     $(".hash-" + paramName).each(function () {
         var sel = $(this)
@@ -36,5 +17,55 @@ $(function () {
     });
     fixHash(location.hash.substr(1))
     $(location.hash + "-button").tab("show")
-})
+    makeSortable("exam")
+    makeSortable("question")
 
+});
+
+function makeSortable(name) {
+    $("." + name + "-list").sortable({
+            update: updateSortedList(name)
+        }
+    );
+}
+
+function updateSortedList(name) {
+    return function (event, ui) {
+        var id = $(this).attr("parentId");
+        var order = $(this).sortable("toArray", {attribute: "itemId"});
+
+        console.info(id, order);
+
+        $.ajax({
+            type: "POST",
+            url: "/" + name + "/arrange/" + id,
+            data: JSON.stringify({order: order}),
+            contentType: "application/json"
+        });
+    }
+}
+
+
+function updateQuestionsIndex(event, ui) {
+    var examId = $("#exam").attr("examId");
+    var order = $('#questions-list').sortable("toArray", {attribute: "questionId"});
+
+    console.info(examId, order)
+
+    $.ajax({
+        type: "POST",
+        url: "/exam/arrageQuestions/" + examId,
+        data: JSON.stringify({order: order}),
+        contentType: "application/json"
+    });
+}
+
+
+function makeSortables() {
+    /*  $('.exam-list').sortable({
+     update: updateQuestionsIndex
+     }
+     );*/
+}
+
+makeSortable("exam")

@@ -4,11 +4,11 @@ import play.api.db.DB
 import scala.slick.driver.PostgresDriver.simple._
 import play.api.Play.current
 import slick.driver.{BasicQueryTemplate, BasicInvokerComponent}
+import Database.threadLocalSession
 
 trait SchoolEntityTable[T <: SchoolEntity[T]] {
   self: Table[T] =>
 
-  import Database.threadLocalSession
 
   def session[T](f: => T): T = {
     SchoolEntityTable.database.withSession {
@@ -27,13 +27,15 @@ trait SchoolEntityTable[T <: SchoolEntity[T]] {
   } yield u
 
   def save(v: T): T = session {
-    v.id.map {
-      id => byIdQuery(id).mutate(f => f.row = v)
-      v
-    }.getOrElse {
-      v.withId(insertProjection.insert(v))
-    }
+    v.id.map(update(v)).getOrElse(saveNew(v))
   }
+
+  def update(v: T)(id: Long): T = {
+    byIdQuery(id).mutate(f => f.row = v)
+    v
+  }
+
+  def saveNew(v: T): T = v.withId(insertProjection.insert(v))
 
   def byId(id: Long) = session(byIdQuery.firstOption(id))
 
@@ -42,8 +44,6 @@ trait SchoolEntityTable[T <: SchoolEntity[T]] {
   def restore(data: Seq[SchoolEntity[_]]) = data.foreach {
     data => *.insert(data.asInstanceOf[T])
   }
-
-
 }
 
 trait SchoolEntity[T] {
@@ -52,6 +52,29 @@ trait SchoolEntity[T] {
   lazy val id_! = id.getOrElse(-1L)
 
   def withId(id: Long): T
+}
+
+trait OrderedSchoolEntity[T] {
+  val order: Int
+
+  def withOrder(order: Int): T
+
+  def orderedFor: Long
+}
+
+trait OrderedSchoolEntityTable[T <: SchoolEntity[T] with OrderedSchoolEntity[T]] extends SchoolEntityTable[T] {
+  self: Table[T] =>
+
+  def orderFor: Column[Long]
+
+
+  def nextPosQuery(forId: Long) = for {
+    v <- self if v.orderFor === forId
+  } yield v.id
+
+  def nextPos(forId: Long) = Query(nextPosQuery(forId).length).first()
+
+  override def saveNew(v: T): T = super.saveNew(v.withOrder(nextPos(v.orderedFor)))
 }
 
 

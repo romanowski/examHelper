@@ -31,6 +31,14 @@ object Application extends Controller {
       Action(request => f(teacherId)(request))
   }
 
+  /**
+   * Action for authenticated users.
+   */
+  def IsAuthenticated[T](bodyParser: BodyParser[T])(f: => Long => Request[T] => Result) = Security.Authenticated(username, onUnauthorized) {
+    teacherId =>
+      Action(bodyParser)(request => f(teacherId)(request))
+  }
+
 
   // ######### index
   def index = IsAuthenticated {

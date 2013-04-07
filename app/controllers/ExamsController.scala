@@ -3,11 +3,11 @@ package controllers
 import play.api.data.Form
 import play.api.data.Forms._
 import scala.Some
-import db.Exam
+import db.{OrderedSchoolEntityTable, Question, Exam}
 import Application._
 import play.api.templates.Html
 
-object ExamsController extends EntityController[Exam] {
+object ExamsController extends EntityController[Exam] with OrderedEntityController[Question] {
 
 
   override val formName: String = "exam_form"
@@ -45,4 +45,8 @@ object ExamsController extends EntityController[Exam] {
         ).getOrElse(Redirect(routes.Application.login))
     }
   }
+
+  def items(id: Long): Seq[Question] = Question.forExam(id)
+
+  val meta: OrderedSchoolEntityTable[Question] = Question
 }

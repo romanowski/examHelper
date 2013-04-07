@@ -1,4 +1,4 @@
 @(answer: db.Answer)(implicit req: Request[AnyContent])
-<li>
+<li itemId='@answer.id.getOrElse(-1)'>
 @AnswerController.view(answer)
 </li>
