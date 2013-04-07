@@ -1,0 +1,8 @@
+@(q: db.StudentExam)(implicit req: Utils.Req)
+<div>
+    @q.name : <a href=" @Utils.editPath(StudentExamController.formName, q.id_!) " class="hash-href">Edytuj</a>
+    <br>
+    Login: @q.login
+    <br>
+    Hasło: @q.password
+</div>
